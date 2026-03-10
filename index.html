@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vtuber Cute Fans - 互動型聊天室工具 | 測試版下載</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- CSS 樣式開始 --- */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            color: #333;
+            background-color: #fff;
+            scroll-behavior: smooth; /* 平滑滾動 */
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 15px 50px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff; /* 專業藍色 */
+            text-decoration: none;
+        }
+
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover {
+            color: #007bff;
+        }
+
+        /* Hero 區域 (影片背景) */
+        #hero {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* 全螢幕高度 */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding-top: 80px; /* 避開導覽列 */
+            box-sizing: border-box;
+        }
+
+        #hero video.back-video {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+            object-fit: cover; /* 確保影片填滿 */
+            filter: brightness(60%); /* 降低影片亮度以突出文字 */
+        }
+
+        .hero-content {
+            z-index: 1;
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4); /* 文字背景半透明疊加，增加清晰度 */
+            border-radius: 10px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .hero-content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .hero-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* 功能介紹區域 */
+        #features {
+            padding: 100px 50px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        #features h2 {
+            font-size: 2.5em;
+            margin-bottom: 60px;
+            color: #222;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 自適應格狀佈局 */
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-item i {
+            font-size: 3em;
+            color: #007bff; /* 主色調藍色 */
+            margin-bottom: 25px;
+        }
+        
+        /* 為特殊 Icon 設置顏色 */
+        .feature-item .fa-twitch { color: #9146ff; }
+        .feature-item .fa-youtube { color: #ff0000; }
+
+        .feature-item h3 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-item p {
+            font-size: 1em;
+            line-height: 1.6;
+            color: #666;
+            margin: 0;
+        }
+
+        /* 下載區域 */
+        #download {
+            padding: 100px 50px;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        #download h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        #download p {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background-color: #28a745; /* 綠色表示下載/成功 */
+            color: white;
+            padding: 20px 50px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.3em;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .download-btn:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+        
+        .download-btn i {
+            margin-right: 10px;
+        }
+
+        /* 頁尾 */
+        footer {
+            padding: 30px 50px;
+            text-align: center;
+            background-color: #333;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* RWD 響應式設計 (手機端優化) */
+        @media (max-width: 768px) {
+            header { padding: 10px 20px; }
+            header nav ul { gap: 10px; font-size: 0.9em; }
+            .hero-content h1 { font-size: 2.5em; }
+            .hero-content p { font-size: 1em; }
+            #features, #download { padding: 60px 20px; }
+            #features h2, #download h2 { font-size: 2em; }
+        }
+        /* --- CSS 樣式結束 --- */
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#hero" class="logo">Vtuber Cute Fans</a>
+        <nav>
+            <ul>
+                <li><a href="#features">功能描述</a></li>
+                <li><a href="#download">測試下載</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <video autoplay loop muted playsinline class="back-video">
+            <source src="Vtuber-Cute-Fans-Demo.mp4" type="video/mp4">
+            你的瀏覽器不支援 HTML5 影片。
+        </video>
+        <div class="hero-content">
+            <h1>Vtuber Cute Fans</h1>
+            <p>互動型聊天室，套用粉絲形象使聊天室成為更生動的互動工具。</p>
+            <a href="#download" class="hero-btn">立即下載測試</a>
+        </div>
+    </section>
+
+    <section id="features">
+        <h2>強大且專業的功能</h2>
+        <div class="features-grid">
+            
+            <div class="feature-item">
+                <i class="fas fa-link"></i>
+                <h3>自由綁定</h3>
+                <p>把你的素材綁定在觸發的動作上。</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fas fa-file-import"></i>
+                <h3>多種檔案支援</h3>
+                <p>jpg/png靜態圖片，apng轉換，spriteSheet多幀動畫，連續png匯入，Spine支援。</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fas fa-sliders-h"></i>
+                <h3>自由調整</h3>
+                <p>自由調整素材大小、播放速度。</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fas fa-comments"></i>
+                <h3>互動工具</h3>
+                <p>與你的觀眾互動。</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fas fa-layer-group"></i>
+                <h3>多重覆蓋系統</h3>
+                <p>為一般觀眾、會員套用不同形象組合。</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fas fa-id-badge"></i>
+                <h3>名字綁定系統</h3>
+                <p>不同的名字套用不同形象，可以匯出單一檔案素材綁定包給別人使用。</p>
+            </div>
+            
+            <div class="feature-item">
+                <div>
+                    <i class="fab fa-twitch"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <h3>平台支援</h3>
+                <p>支援Twitch、Youtube。</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fas fa-smile"></i>
+                <h3>表情支援</h3>
+                <p>支援7tv表情。</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fas fa-sync-alt"></i>
+                <h3>自動連線</h3>
+                <p>不用每次直播都設定一次聊天室。</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="download">
+        <h2>立即下載 (Download Now)</h2>
+        <p>目前主要提供給測試者使用，歡迎下載體驗並給予回饋。<br>這是指向 GitHub Release 的公開連結。</p>
+        <a href="https://github.com/voidyuu0113/Vtuber-Cute-Fans/releases/tag/release" class="download-btn">
+            <i class="fab fa-github"></i> 前往 GitHub Releases 下載
+        </a>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 VoidYuu / Vtuber Cute Fans. All rights reserved.</p>
+        <p>專案託管於 <a href="https://github.com/voidyuu0113/Vtuber-Cute-Fans" target="_blank">GitHub</a></p>
+    </footer>
+
+</body>
+</html>
